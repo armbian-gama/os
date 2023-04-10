@@ -107,7 +107,7 @@ jobs:
 
     with:
 
-      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      config: "${{ github.event.inputs.config || 'all.conf' }}"
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
       part: 3
