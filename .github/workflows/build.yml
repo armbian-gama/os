@@ -125,7 +125,7 @@ jobs:
       part: 3
       of: 8
       version: "${{ needs.Version.outputs.version }}"
-      parallel: 10
+      parallel: 15
 
     secrets:
       ACCESS_TOKEN:  ${{ secrets.GITHUB_TOKEN }} # ${{ secrets.ACCESS_TOKEN }}
@@ -138,6 +138,7 @@ jobs:
   Closing:
 
     name: "Closing"
+    if: always()
     needs: [Cluster_1]
     runs-on: ubuntu-latest
     steps:
