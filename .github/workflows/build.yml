@@ -64,22 +64,31 @@ jobs:
 
       - name: Get latest release of NodeJS
         uses: rez0n/actions-github-release@main
-        id: node_release
+        id: prerelease
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: "armbian/os"
           type: "prerelease"
 
-      - name: "Show"
-        run: echo ${{ steps.node_release.outputs.release }}
+      - name: Get latest release of NodeJS
+        uses: rez0n/actions-github-release@main
+        id: stable
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: "armbian/os"
+          type: "stable"
 
-      - name: "Store version"
+      - name: "Store TAG"
         id: releases
         run: |
-
-          echo "${{ steps.node_release.outputs.release }}" > tag
-          echo "version=${{ steps.node_release.outputs.release }}" >> $GITHUB_OUTPUT
-
+          echo "${{ steps.prerelease.outputs.release }}" > tag
+          echo "version=${{ steps.prerelease.outputs.release }}" >> $GITHUB_OUTPUT
+          echo "version=${{ steps.prerelease.outputs.release }}" >> $GITHUB_ENV
+          if [[ -z "${{ steps.prerelease.outputs.release }}" ]]; then
+              echo "${{ steps.stable.outputs.release }}" > tag
+              echo "version=${{ steps.stable.outputs.release }}" >> $GITHUB_OUTPUT
+              echo "version=${{ steps.stable.outputs.release }}" >> $GITHUB_ENV
+          fi          
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
@@ -87,11 +96,17 @@ jobs:
           path: tag
           retention-days: 5
 
-      - uses: ncipollo/release-action@v1
-        if: ${{ steps.node_release.outputs.release != '' }}
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
-          tag: ${{ steps.node_release.outputs.release }}
-          name: "${{ steps.node_release.outputs.release }}"
+          tag_name: ${{ env.version }}
+          delete_release: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.version }}
+          name: "${{ env.version }}"
           omitBody: "true"
           prerelease: "true"
           allowUpdates: true
