@@ -20,6 +20,9 @@ on:
         required: false
         default: ''
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
@@ -30,12 +33,6 @@ jobs:
     outputs:
       version: ${{steps.releases.outputs.version}}
     steps:
-
-      - name: "Cancel active workflow"
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          all_but_latest: true
-          access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Keep only 32 nightly releases"
         uses: Vucko130/delete-older-releases@v0.2.2
