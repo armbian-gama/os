@@ -3,9 +3,6 @@ name: Build Images
 on:
   repository_dispatch:
     types: ["Dispatched jobs"]
-  push:
-  schedule:
-    - cron: "30 3 * * *"
   workflow_dispatch:
     inputs:
       release:
@@ -128,7 +125,7 @@ jobs:
       part: 3
       of: 10
       version: "${{ needs.Version.outputs.version }}"
-      parallel: 20
+      parallel: 10
 
     secrets:
       ACCESS_TOKEN:  ${{ secrets.GITHUB_TOKEN }} # ${{ secrets.ACCESS_TOKEN }}
