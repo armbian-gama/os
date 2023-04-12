@@ -11,7 +11,7 @@ jobs:
 
   Prepare:
     name: "Prepare"
-    if: ${{ github.repository_owner == 'armbian-alpha' }}
+    if: ${{ github.repository_owner == 'armbian-gama' }}
     runs-on: ubuntu-latest
     steps:
 
@@ -37,7 +37,7 @@ jobs:
 
     needs: Prepare
     name: "Cluster 3/8"
-    if: ${{ github.repository_owner == 'armbian-alpha' }}
+    if: ${{ github.repository_owner == 'armbian-gama' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
@@ -80,7 +80,7 @@ jobs:
         days_old: 14
 
     - uses: ncipollo/release-action@v1
-      if: ${{ github.repository_owner == 'armbian-alpha' && github.event.client_payload.release == 'nightly' }}
+      if: ${{ github.repository_owner == 'armbian-gama' && github.event.client_payload.release == 'nightly' }}
       with:
         tag: "${{ github.event.client_payload.version }}"
         omitBody: true
