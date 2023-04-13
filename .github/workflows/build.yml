@@ -36,7 +36,7 @@ jobs:
   Build:
 
     needs: Prepare
-    name: "Cluster 3/8"
+    name: "Cluster 3/10"
     if: ${{ github.repository_owner == 'armbian-gama' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -46,7 +46,7 @@ jobs:
       release: "${{ github.event.client_payload.release || 'nightly' }}"
       board: '${{ github.event.client_payload.board }}'
       part: 3
-      of: 8
+      of: 10
       version: "${{ github.event.client_payload.version }}"
       parallel: 13
 
