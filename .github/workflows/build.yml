@@ -48,7 +48,7 @@ jobs:
       part: 3
       of: 10
       version: "${{ github.event.client_payload.version }}"
-      parallel: 13
+      parallel: 10
 
     secrets:
       ACCESS_TOKEN:  ${{ secrets.GITHUB_TOKEN }} # ${{ secrets.ACCESS_TOKEN }}
